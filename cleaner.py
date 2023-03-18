@@ -3,54 +3,46 @@ import pandas as pd
 from typing import List
 from mintlemon import Normalizer
 
-# def contains_number(text: str) -> bool:
-#     """
-#     Check whether the input text contains any numerical digits.
+def normalize_numeric_text_in_dataframe_column(dataframe: pd.DataFrame, column_name: str) -> pd.DataFrame:
+    """
+    Normalize numeric text in a pandas dataframe column.
 
-#     Parameters
-#     ----------
-#     text : str
-#         The input text to check.
+    Replaces numeric text in a specified column of a pandas dataframe with their textual
+    equivalents, using the Normalizer.convert_text_numbers() method from the mintlemon-turkish-nlp library.
 
-#     Returns
-#     -------
-#     bool
-#         True if the input text contains numerical digits, False otherwise.
-#     """
-#     if not isinstance(text, str):
-#         return False
+    Parameters:
+    -----------
+    dataframe : pd.DataFrame
+        The pandas dataframe to process.
+    column_name : str
+        The name of the column to process.
+                
+    Returns:
+    --------
+    dataframe : pd.DataFrame
+        A new pandas dataframe with the specified column's numeric text replaced with their textual equivalents.
 
-#     numerical_pattern = re.compile(r"\d+")
-#     numerical_matches = numerical_pattern.findall(text)
+    Examples:
+    ---------
+    >>> import pandas as pd
+    >>> from mintlemon import Normalizer
+    >>> df = pd.DataFrame({'text': ['2 milyon suriyeli yerine bu 10 milyon siyahi insanların gelmesine razıyım',
+    ...                             'Hiç sayı yok bu metinde']})
+    >>> df = normalize_numeric_text_in_dataframe_column(df, "text")
+    >>> print(df)
+        
+       text
+    0  iki milyon suriyeli yerine bu on milyon siyahi insanların gelmesine razıyım
+    1  Hiç sayı yok bu metinde
+    """
+    for index, row in dataframe.iterrows():
+        cell_text = row[column_name]
+        if any(char.isdigit() for char in cell_text):
+            words = cell_text.split()
+            revised_text = " ".join([Normalizer.convert_text_numbers(word) if word.isdigit() else word for word in words])
+            dataframe.at[index, column_name] = revised_text
+    return dataframe
 
-#     if not numerical_matches:
-#         return False
-#     else:
-#         return True
-
-
-# def revise_numbers_in_column(df: pd.DataFrame, column: str) -> pd.DataFrame:
-#     """
-#     Replace numerical digits in the specified column of the input pandas DataFrame.
-
-#     Parameters
-#     ----------
-#     df : pandas.DataFrame
-#         The input DataFrame.
-#     column_name : str
-#         The name of the column to revise.
-
-#     Returns
-#     -------
-#     pandas.DataFrame
-#         The revised DataFrame.
-#     """
-#     for index, row in df.iterrows():
-#         text = row[column]
-#         if contains_number(text):
-#             revised_text = Normalizer.convert_text_numbers(text)
-#             df.at[index, column] = revised_text
-#     return df
 
 def mintlemon_data_preprocessing(df: pd.DataFrame, column: str) -> pd.DataFrame:
     """
@@ -77,9 +69,8 @@ def mintlemon_data_preprocessing(df: pd.DataFrame, column: str) -> pd.DataFrame:
     4. Convert all characters to lowercase.
     """
     df[column] = df[column].apply(Normalizer.remove_punctuations)
-    #df[column] = df[column].apply(Normalizer.normalize_turkish_chars)
-    #df[column] = df[column].apply(Normalizer.deasciify)
-    df[column] =  df[column].apply(Normalizer.remove_accent_marks)
+    df[column] = df[column].apply(Normalizer.normalize_turkish_chars)
+    df[column] = df[column].apply(Normalizer.deasciify)
     df[column] = df[column].apply(Normalizer.lower_case)
 
     return df
@@ -138,10 +129,9 @@ def replace_is_offensive(df: pd.DataFrame) -> pd.DataFrame:
 
 
 if __name__ == "__main__":
-    # CSV dosyasını oku ve verileri DataFrame'e yükle
     df = pd.read_csv("data/teknofest_data.csv")
     df = mintlemon_data_preprocessing(df, "text")
-    #df = revise_numbers_in_column(df, "text")
+    df = normalize_numeric_text_in_dataframe_column(df, "text")
     df = remove_short_text(df, 5)
     df = replace_is_offensive(df)
 
