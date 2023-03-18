@@ -77,8 +77,6 @@ def mintlemon_data_preprocessing(df: pd.DataFrame, column: str) -> pd.DataFrame:
     4. Convert all characters to lowercase.
     """
     df[column] = df[column].apply(Normalizer.remove_punctuations)
-    #df[column] = df[column].apply(Normalizer.normalize_turkish_chars)
-    #df[column] = df[column].apply(Normalizer.deasciify)
     df[column] =  df[column].apply(Normalizer.remove_accent_marks)
     df[column] = df[column].apply(Normalizer.lower_case)
 
