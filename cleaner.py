@@ -2,7 +2,7 @@ import pandas as pd
 import re
 
 
-def cleaning(text):
+def cleaning(text: str):
     text = str(text).lower()
     text = " ".join([word for word in text.split() if '#' not in word and '@' not in word])
     text = re.sub(r"(@\[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)|^rt|http.+?", "", text)
@@ -17,15 +17,14 @@ def cleaning(text):
     return text
 
 
-def turkish_char(text):
+def turkish_char(text: str):
     translation_table = str.maketrans("ğĞıİöÖüÜşŞçÇ", "gGiIoOuUsScC")
     result = text.translate(translation_table)
     return result
 
 
-def data_cleaning():
+def data_cleaning(df: pd.DataFrame):
     try:
-        df = pd.read_csv('data/teknofest_train_final.csv', sep='|')
         text = df.text.apply(turkish_char)
         df['text'] = text.apply(cleaning)
         df.to_csv('data/clean_data.csv', index=False)
