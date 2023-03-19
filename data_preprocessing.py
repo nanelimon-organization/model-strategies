@@ -29,17 +29,17 @@ class DataPreprocessor:
     >>> import pandas as pd
     >>> from data_preprocessing import DataPreprocessor
     >>> df = pd.DataFrame({'text': ['2 milyon suriyeli yerine bu 10 milyon siyahi insanların gelmesine razıyım',
-    ...                             'Hiç sayı yok bu metinde'],
-    ...                             'target': ['OTHER', 'OTHER'],
-    ...                             'is_offensive': [0, 1]})
+    ...                             'Hiç sayı yok bu metinde ve aşağlayıcı bir söylem yok '],
+    ...                             'target': ['RACIST', 'OTHER'],
+    ...                             'is_offensive': [1, 1]})
 
     >>> preprocessor = DataPreprocessor(df, "text")
     >>> preprocessed_df = preprocessor.preprocess()
     >>> print(preprocessed_df)
 
        text                                                                             target          is_offensive
-    0  iki milyon suriyeli yerine bu on milyon siyahi insanların gelmesine razıyım      OTHER            1
-    1                                            Hiç sayı yok bu metinde                OTHER            0
+    0  iki milyon suriyeli yerine bu on milyon siyahi insanların gelmesine razıyım      RACIST           1
+    1  Hiç sayı yok bu metinde ve aşağlayıcı bir söylem yok                             OTHER            0
     """
 
     def __init__(self, df: pd.DataFrame, column: str):
