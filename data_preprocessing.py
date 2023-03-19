@@ -1,4 +1,3 @@
-import re
 import pandas as pd
 from typing import List
 from mintlemon import Normalizer
@@ -33,15 +32,16 @@ class DataPreprocessor:
     ...                             'Hiç sayı yok bu metinde'],
     ...                             'target': ['OTHER', 'OTHER'],
     ...                             'is_offensive': [0, 1]})
-    
+
     >>> preprocessor = DataPreprocessor(df, "text")
     >>> preprocessed_df = preprocessor.preprocess()
     >>> print(preprocessed_df)
-    
+
        text                                                                             target          is_offensive
     0  iki milyon suriyeli yerine bu on milyon siyahi insanların gelmesine razıyım      OTHER            1
     1                                            Hiç sayı yok bu metinde                OTHER            0
     """
+
     def __init__(self, df: pd.DataFrame, column: str):
         self.df = df
         self.text_column = column
@@ -59,7 +59,7 @@ class DataPreprocessor:
             The pandas dataframe to process.
         column_name : str
             The name of the column to process.
-                    
+
         Returns:
         --------
         dataframe : pd.DataFrame
@@ -73,7 +73,7 @@ class DataPreprocessor:
         ...                             'Hiç sayı yok bu metinde']})
         >>> df = normalize_numeric_text_in_dataframe_column(df, "text")
         >>> print(df)
-            
+
         text
         0  iki milyon suriyeli yerine bu on milyon siyahi insanların gelmesine razıyım
         1  Hiç sayı yok bu metinde
@@ -82,7 +82,14 @@ class DataPreprocessor:
             cell_text = row[self.text_column]
             if any(char.isdigit() for char in cell_text):
                 words = cell_text.split()
-                revised_text = " ".join([Normalizer.convert_text_numbers(word)if word.isdigit() else word for word in words])
+                revised_text = " ".join(
+                    [
+                        Normalizer.convert_text_numbers(word)
+                        if word.isdigit()
+                        else word
+                        for word in words
+                    ]
+                )
                 self.df.at[index, self.text_column] = revised_text
 
     def mintlemon_data_preprocessing(self) -> None:
@@ -109,11 +116,17 @@ class DataPreprocessor:
         3. Deasciify the text.
         4. Convert all characters to lowercase.
         """
-        self.df[self.text_column] = self.df[self.text_column].apply(Normalizer.remove_punctuations)
-        self.df[self.text_column] = self.df[self.text_column].apply(Normalizer.remove_accent_marks)
-        #self.df[self.text_column] = self.df[self.text_column].apply(Normalizer.normalize_turkish_chars)
-        #self.df[self.text_column] = self.df[self.text_column].apply(Normalizer.deasciify)
-        self.df[self.text_column] = self.df[self.text_column].apply(Normalizer.lower_case)
+        self.df[self.text_column] = self.df[self.text_column].apply(
+            Normalizer.remove_punctuations
+        )
+        self.df[self.text_column] = self.df[self.text_column].apply(
+            Normalizer.remove_accent_marks
+        )
+        # self.df[self.text_column] = self.df[self.text_column].apply(Normalizer.normalize_turkish_chars)
+        # self.df[self.text_column] = self.df[self.text_column].apply(Normalizer.deasciify)
+        self.df[self.text_column] = self.df[self.text_column].apply(
+            Normalizer.lower_case
+        )
 
     def remove_short_text(self, min_len: int = 5) -> None:
         """
@@ -137,9 +150,13 @@ class DataPreprocessor:
         specified minimum length threshold. The function first identifies the indexes of the observations with short text
         values based on the minimum length threshold. Then, the function drops those observations from the input DataFrame.
         """
-        result = [index for index, i in enumerate(self.df[self.text_column]) if len(str(i)) < min_len]
+        result = [
+            index
+            for index, i in enumerate(self.df[self.text_column])
+            if len(str(i)) < min_len
+        ]
         self.df.drop(self.df.index[result], inplace=True)
-        
+
     def replace_is_offensive(self) -> None:
         """
         Replace the value of 'is_offensive' from 1 to 0 for the observation units that meet the following criteria:
@@ -159,9 +176,11 @@ class DataPreprocessor:
         This function modifies the input DataFrame by replacing the 'is_offensive' values that meet the criteria.
         The function replaces 'is_offensive' values from 1 to 0 where the 'target' column is 'OTHER' and the 'is_offensive' column is 1.
         """
-        idx = self.df.loc[((df["target"] == "OTHER") & (self.df["is_offensive"] == 1))].index
+        idx = self.df.loc[
+            ((df["target"] == "OTHER") & (self.df["is_offensive"] == 1))
+        ].index
         self.df.loc[idx, "is_offensive"] = 0
-    
+
     def preprocess(self) -> pd.DataFrame:
         """
         Apply all preprocessing steps to the input pandas DataFrame.
@@ -175,7 +194,7 @@ class DataPreprocessor:
         self.df = self.normalize_numeric_text_in_dataframe_column()
         self.df = self.remove_short_text()
         self.df = self.replace_is_offensive()
-        
+
         return self.df
 
 
@@ -183,20 +202,20 @@ if __name__ == "__main__":
     """
     Read a CSV file containing text data, preprocess it using the DataPreprocessor class,
     remove duplicate rows, and save the preprocessed data to a new CSV file.
-    
+
     This script reads a CSV file with text data, creates a DataPreprocessor object with the input
     DataFrame and the name of the text column, preprocesses the text data, and removes duplicate
     rows based on the text column. Finally, the preprocessed and deduplicated DataFrame is saved
     to a new CSV file.
     """
     df = pd.read_csv("data/teknofest_data.csv", sep="|")
-    
+
     preprocessor = DataPreprocessor(df, "text")
     df = preprocessor.preprocess()
 
-    print(df[df.duplicated(subset='text')].count())
-    df.drop_duplicates(subset='text', inplace=True)
-    print(df[df.duplicated(subset='text')].count())
+    print(df[df.duplicated(subset="text")].count())
+    df.drop_duplicates(subset="text", inplace=True)
+    print(df[df.duplicated(subset="text")].count())
 
     df.to_csv("data/result.csv", index=False)
 
@@ -233,7 +252,7 @@ if __name__ == "__main__":
 #     >>> data = {'text': ["doğduğun günün aq", "doğduğun günün a.w"]}
 #     >>> df = pd.DataFrame(data)
 #     >>> df = convert_offensive_contractions(df, 'text')
-    
+
 #        text
 #     0  doğduğun günün amına koyayım
 #     1  doğduğun günün amına koyayım
