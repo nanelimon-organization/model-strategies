@@ -130,10 +130,13 @@ def replace_is_offensive(df: pd.DataFrame) -> pd.DataFrame:
 
 
 if __name__ == "__main__":
-    df = pd.read_csv("data/teknofest_data.csv")
+    df = pd.read_csv("data/teknofest_train_final.csv", sep='|')
     df = mintlemon_data_preprocessing(df, "text")
     df = normalize_numeric_text_in_dataframe_column(df, "text")
     df = remove_short_text(df, 5)
     df = replace_is_offensive(df)
+    print(df[df.duplicated(subset='text')].count())
+    df.drop_duplicates(subset='text', inplace=True)
+    print(df[df.duplicated(subset='text')].count())
 
-    df.to_csv("result.csv", index=False)
+    df.to_csv("data/result_v2_removing_turkish_chars.csv", index=False)
