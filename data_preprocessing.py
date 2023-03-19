@@ -245,7 +245,7 @@ if __name__ == "__main__":
 #     )
 #     return df
 
-data = {'text': ["doğduğun günün aq", "doğduğun günün a.w"]}
-df = pd.DataFrame(data)
-df = convert_offensive_contractions(df, 'text')
-print(df.head())
+# data = {'text': ["doğduğun günün aq", "doğduğun günün a.w"]}
+# df = pd.DataFrame(data)
+# df = convert_offensive_contractions(df, 'text')
+# print(df.head())
