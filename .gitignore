@@ -10,7 +10,6 @@ __pycache__/
 .idea/csv-editor.xml
 
 # Distribution / packaging
-data
 .Python
 build/
 develop-eggs/

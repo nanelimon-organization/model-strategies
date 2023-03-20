@@ -1,6 +1,9 @@
 import pandas as pd
-from typing import List
 from mintlemon import Normalizer
+from pathlib import Path
+import json
+
+SWEAR_RESOURCES_PATH = str(Path(__file__) / "data/sw_words.json")
 
 
 class DataPreprocessor:
@@ -45,6 +48,44 @@ class DataPreprocessor:
     def __init__(self, df: pd.DataFrame, column: str):
         self.df = df
         self.text_column = column
+        with open(SWEAR_RESOURCES_PATH, "r") as f:
+            words_sw = json.load(f)
+        self.words_sw = words_sw
+
+    def convert_offensive_contractions(self) -> None:
+        """
+        Replace offensive contractions in the specified DataFrame column.
+
+        Parameters
+        ----------
+        df : pandas.DataFrame
+            The DataFrame containing the column to process.
+        column : str
+            The name of the column in the DataFrame to apply the contractions conversion.
+
+        Returns
+        -------
+        pandas.DataFrame
+            The DataFrame with offensive contractions replaced in the specified column.
+
+        Examples
+        --------
+        >>> data = {'text': ["doğduğun günün aq", "doğduğun günün a.w"]}
+        >>> df = pd.DataFrame(data)
+        >>> df = convert_offensive_contractions(df, 'text')
+
+        text
+        0  doğduğun günün amına koyayım
+        1  doğduğun günün amına koyayım
+        """
+        self.df[self.text_column] = self.df[self.text_column].apply(
+            lambda text: " ".join(
+                [
+                    self.words_sw[word] if word in self.words_sw else word
+                    for word in text.lower().split()
+                ]
+            )
+        )
 
     def normalize_numeric_text_in_dataframe_column(self) -> pd.DataFrame:
         """
@@ -190,6 +231,7 @@ class DataPreprocessor:
         pandas.DataFrame
             The preprocessed DataFrame.
         """
+        self.convert_offensive_contractions()
         self.mintlemon_data_preprocessing()
         self.normalize_numeric_text_in_dataframe_column()
         self.remove_short_text()
@@ -230,39 +272,6 @@ if __name__ == "__main__":
 # #input_text_3 = "doğduğun günün amk"
 # #output_text_1 = convert_offensive_contractions(input_text_1)
 # #print(output_text_1)
-
-# def convert_offensive_contractions(df, column="text") -> pd.DataFrame:
-#     """
-#     Replace offensive contractions in the specified DataFrame column.
-
-#     Parameters
-#     ----------
-#     df : pandas.DataFrame
-#         The DataFrame containing the column to process.
-#     column : str
-#         The name of the column in the DataFrame to apply the contractions conversion.
-
-#     Returns
-#     -------
-#     pandas.DataFrame
-#         The DataFrame with offensive contractions replaced in the specified column.
-
-#     Examples
-#     --------
-#     >>> data = {'text': ["doğduğun günün aq", "doğduğun günün a.w"]}
-#     >>> df = pd.DataFrame(data)
-#     >>> df = convert_offensive_contractions(df, 'text')
-
-#        text
-#     0  doğduğun günün amına koyayım
-#     1  doğduğun günün amına koyayım
-#     """
-#     df[column] = df[column].apply(
-#         lambda text: " ".join(
-#             [dict_ex[word] if word in dict_ex else word for word in text.lower().split()]
-#         )
-#     )
-#     return df
 
 # data = {'text': ["doğduğun günün aq", "doğduğun günün a.w"]}
 # df = pd.DataFrame(data)
