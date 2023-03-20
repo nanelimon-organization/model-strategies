@@ -190,10 +190,10 @@ class DataPreprocessor:
         pandas.DataFrame
             The preprocessed DataFrame.
         """
-        self.df = self.mintlemon_data_preprocessing()
-        self.df = self.normalize_numeric_text_in_dataframe_column()
-        self.df = self.remove_short_text()
-        self.df = self.replace_is_offensive()
+        self.mintlemon_data_preprocessing()
+        self.normalize_numeric_text_in_dataframe_column()
+        self.remove_short_text()
+        self.replace_is_offensive()
 
         return self.df
 
