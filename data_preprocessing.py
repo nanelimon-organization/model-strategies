@@ -152,16 +152,17 @@ class DataPreprocessor:
         Notes
         -----
         The preprocessing steps applied to the column are as follows:
-        1. Remove all punctuations.
-        2. Normalize Turkish characters.
-        3. Deasciify the text.
-        4. Convert all characters to lowercase.
+        1. Remove accent marks.
+        2. Remove all punctuations.
+        #3. Normalize Turkish characters.
+        #4. Deasciify the text.
+        5. Convert all characters to lowercase.
         """
         self.df[self.text_column] = self.df[self.text_column].apply(
-            Normalizer.remove_punctuations
+            Normalizer.remove_accent_marks
         )
         self.df[self.text_column] = self.df[self.text_column].apply(
-            Normalizer.remove_accent_marks
+            Normalizer.remove_punctuations
         )
         # self.df[self.text_column] = self.df[self.text_column].apply(Normalizer.normalize_turkish_chars)
         # self.df[self.text_column] = self.df[self.text_column].apply(Normalizer.deasciify)
