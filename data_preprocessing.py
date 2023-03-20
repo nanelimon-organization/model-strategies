@@ -1,9 +1,6 @@
 import pandas as pd
 from mintlemon import Normalizer
-from pathlib import Path
 import json
-
-SWEAR_RESOURCES_PATH = str(Path(__file__) / "data/sw_words.json")
 
 
 class DataPreprocessor:
@@ -48,7 +45,7 @@ class DataPreprocessor:
     def __init__(self, df: pd.DataFrame, column: str):
         self.df = df
         self.text_column = column
-        with open(SWEAR_RESOURCES_PATH, "r") as f:
+        with open("static/sw_words.json", "r") as f:
             words_sw = json.load(f)
         self.words_sw = words_sw
 
@@ -164,7 +161,7 @@ class DataPreprocessor:
         self.df[self.text_column] = self.df[self.text_column].apply(
             Normalizer.remove_punctuations
         )
-        # self.df[self.text_column] = self.df[self.text_column].apply(Normalizer.normalize_turkish_chars)
+        self.df[self.text_column] = self.df[self.text_column].apply(Normalizer.normalize_turkish_chars)
         # self.df[self.text_column] = self.df[self.text_column].apply(Normalizer.deasciify)
         self.df[self.text_column] = self.df[self.text_column].apply(
             Normalizer.lower_case
@@ -251,7 +248,8 @@ if __name__ == "__main__":
     rows based on the text column. Finally, the preprocessed and deduplicated DataFrame is saved
     to a new CSV file.
     """
-    df = pd.read_csv("data/teknofest_data.csv", sep="|")
+
+    df = pd.read_csv("data/teknofest_train_final.csv", sep="|")
 
     preprocessor = DataPreprocessor(df, "text")
     df = preprocessor.preprocess()
@@ -260,7 +258,8 @@ if __name__ == "__main__":
     df.drop_duplicates(subset="text", inplace=True)
     print(df[df.duplicated(subset="text")].count())
 
-    df.to_csv("data/result.csv", index=False)
+    #df.to_csv("data/result_v1_not_removing_turkish_chars.csv", index=False)
+    df.to_csv("data/result_v2_removing_turkish_chars.csv", index=False)
 
 
 # def convert_offensive_contractions(text):
@@ -268,7 +267,7 @@ if __name__ == "__main__":
 #     new_text = [dict_ex[word] if word in contraction_conversion_dict else word for word in words]
 #     return " ".join(new_text)
 
-# #input_text_1 = "doğduğun günün a.w"
+# #input_text_1 = "doğduğun günün aq"
 # #input_text_2 = "doğduğun günün a.w"
 # #input_text_3 = "doğduğun günün amk"
 # #output_text_1 = convert_offensive_contractions(input_text_1)
