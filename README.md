@@ -100,3 +100,8 @@ df.to_csv("data/teknofest_train_final_preprocessed.csv", index=False)
 ```
 
 
+## Not: 
+
+* Veri ön işleme aşamasını ayrıntılı incelemek için lütfen [preprocessing-service](https://github.com/Teknofest-Nane-Limon/preprocessing-service) reposuna bir göz atın. 
+
+---
