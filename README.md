@@ -41,7 +41,8 @@ Bu notebook'ta, veri seti üzerinde yapılan bazı veri ön işleme adımlarına
 
 #### Aşağıdaki tablo, replace işlemi öncesinde ve sonrasındaki sınıf dağılımını göstermektedir.
 
-<div class="markdown prose w-full break-words dark:prose-invert light"><table><thead><tr><th>Target Sınıfı</th><th>is_offensive = 0</th><th>is_offensive = 1</th></tr></thead><tbody><tr><td>INSULT</td><td>-</td><td>2393</td></tr><tr><td>OTHER</td><td>3511</td><td>56</td></tr><tr><td>PROFANITY</td><td>-</td><td>2372</td></tr><tr><td>RACIST</td><td>1</td><td>2016</td></tr><tr><td>SEXIST</td><td>-</td><td>2079</td></tr></tbody></table><div>
+<table><thead><tr><th>Target Sınıfı</th><th>is_offensive = 0 (önce)</th><th>is_offensive = 1 (önce)</th><th>is_offensive = 0 (sonra)</th><th>is_offensive = 1 (sonra)</th></tr></thead><tbody><tr><td>INSULT</td><td>-</td><td>2393</td><td>-</td><td>2393</td></tr><tr><td>OTHER</td><td>3511</td><td>56</td><td>3567</td><td>-</td></tr><tr><td>PROFANITY</td><td>-</td><td>2372</td><td>-</td><td>2372</td></tr><tr><td>RACIST</td><td>1</td><td>2016</td><td>-</td><td>2017</td></tr><tr><td>SEXIST</td><td>-</td><td>2079</td><td>-</td><td>2079</td></tr></tbody></table>
+
 
 ## Data Preprocessing Script 
 
