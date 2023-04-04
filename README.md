@@ -24,7 +24,10 @@ Bu örnek confusion matrix, beş farklı sınıf için oluşturulan bir modelin 
 
 Sonuç olarak, base modelimizin performansı oldukça iyi görünüyor. Precision, Recall ve F-Score gibi metrikler ile yüksek sonuçlar elde edilmiştir. Ayrıca, confusion matrix'te de görülebileceği gibi, modelimiz çoğunlukla doğru tahminler yapmıştır. Ancak, özellikle RACIST ve PROFANITY sınıflarındaki yanlış sınıflandırmalar daha dikkat çekici. Bu sınıfların daha dengeli bir şekilde öğrenilmesi için modelin daha fazla veriye ihtiyacı olabilir. 
 
-![cf](https://user-images.githubusercontent.com/83168207/229031158-ac952dfc-af40-444f-b51b-cff38fc19b45.png)
+
+|   |
+| - |
+|![cf](https://user-images.githubusercontent.com/83168207/229031158-ac952dfc-af40-444f-b51b-cff38fc19b45.png)|
 
 
 ### Genel Bakış (Tests/observation.ipynb)
@@ -36,14 +39,9 @@ Bu notebook'ta, veri seti üzerinde yapılan bazı veri ön işleme adımlarına
 - Veri setindeki kısa metinli gözlem birimleri kaldırılmıştır. (ör: "asda" -> drop)
 - Veri setindeki bazı gözlem birimleri, target sınıfları replace edilerek değiştirilmiştir. Bu işlem, "replace_is_offensive" fonksiyonu kullanılarak gerçekleştirilmiştir. Bu fonksiyon, "OTHER" sınıfına ait olan ve aynı zamanda "is_offensive" özelliği de 1 olan gözlem birimlerinin "is_offensive" değerini 0'a dönüştürmektedir.
 
-Aşağıdaki tablo, replace işlemi öncesinde ve sonrasındaki sınıf dağılımını göstermektedir.
+#### Aşağıdaki tablo, replace işlemi öncesinde ve sonrasındaki sınıf dağılımını göstermektedir.
 
-<table><thead><tr><th style="text-align: center;">Target Sınıfı</th><th style="text-align: center;">is_offensive = 0</th><th style="text-align: center;">is_offensive = 1</th></tr></thead><tbody><tr><td style="text-align: center;">INSULT</td><td style="text-align: center;">-</td><td style="text-align: center;">2393</td></tr><tr><td style="text-align: center;">OTHER</td><td style="text-align: center;">3511</td><td style="text-align: center;">56</td></tr><tr><td style="text-align: center;">PROFANITY</td><td style="text-align: center;">-</td><td style="text-align: center;">2372</td></tr><tr><td style="text-align: center;">RACIST</td><td style="text-align: center;">1</td><td style="text-align: center;">2016</td></tr><tr><td style="text-align: center;">SEXIST</td><td style="text-align: center;">-</td><td style="text-align: center;">2079</td></tr></tbody></table>
-
-Önceki tabloda, "OTHER" sınıfına ait olan ve aynı zamanda "is_offensive" özelliği de 1 olan gözlem birimlerinin sayısı 56'dır. replace_is_offensive fonksiyonu kullanıldıktan sonra, "OTHER" sınıfına ait olan ve "is_offensive" özelliği 1 olan gözlem birimlerinin "is_offensive" değeri 0'a dönüştürüldüğünden, "is_offensive" değeri 0 olan "OTHER" sınıfına ait gözlem birimleri sayısı 3511+56=3567'ye yükseldi.
-
-Ayrıca, veri seti hakkında genel bilgi edinmek için bir keşif analizi de yapılmıştır.
-
+<div class="markdown prose w-full break-words dark:prose-invert light"><table><thead><tr><th>Target Sınıfı</th><th>is_offensive = 0</th><th>is_offensive = 1</th></tr></thead><tbody><tr><td>INSULT</td><td>-</td><td>2393</td></tr><tr><td>OTHER</td><td>3511</td><td>56</td></tr><tr><td>PROFANITY</td><td>-</td><td>2372</td></tr><tr><td>RACIST</td><td>1</td><td>2016</td></tr><tr><td>SEXIST</td><td>-</td><td>2079</td></tr></tbody></table><div>
 
 ## Data Preprocessing Script 
 
@@ -51,29 +49,12 @@ Bu script, bir pandas DataFrame içindeki metin verileri üzerinde çeşitli ver
 
 #### Sınıf Özellikleri
 
-- **df - pd.DataFrame:** veri ön işleme yapılacak pandas DataFrame.
-- **text_column - str:** veri ön işleme yapılacak metin sütununun adı.
-- **words_sw - dict/json:** kaba/küfürlü kelimelerin key/value formatında tutan bir veri yapısı. Aykırı sıkça kullanılan aykırı kelimelerin kısaltmalarını convert etmek maksadıyla oluşturulmuştur.
+<table><thead><tr><th>Değişken</th><th>Açıklama</th></tr></thead><tbody><tr><td><code>df - pd.DataFrame</code></td><td>Veri ön işleme yapılacak pandas DataFrame.</td></tr><tr><td><code>text_column - str</code></td><td>Veri ön işleme yapılacak metin sütununun adı.</td></tr><tr><td><code>words_sw - dict/json</code></td><td>Kaba/küfürlü kelimelerin key/value formatında tutan bir veri yapısı. Aykırı sıkça kullanılan aykırı kelimelerin kısaltmalarını convert etmek maksadıyla oluşturulmuştur.</td></tr></tbody></table>
 
 #### Sınıf Fonksiyonları/İşlevleri: 
 
-- **preprocess() ->** pd.DataFrame:
-> Tüm veri ön işleme adımlarının uygulandığı pandas DataFrame'ini döndürür.
+<table><thead><tr><th>Fonksiyon</th><th>Açıklama</th></tr></thead><tbody><tr><td><code>preprocess() -&gt; pd.DataFrame</code></td><td>Tüm veri ön işleme adımlarının uygulandığı pandas DataFrame'ini döndürür.</td></tr><tr><td><code>convert_offensive_contractions() -&gt; None</code></td><td>Belirtilen DataFrame sütunundaki kaba/küfür aykırı kelimeleri değiştirir. (Ör: b*k -&gt; bok , aw -&gt; amına koyiyim vb)</td></tr><tr><td><code>normalize_numeric_text_in_dataframe_column() -&gt; pd.DataFrame</code></td><td>Geliştirmek üzere olduğumuz Türkçe Doğal Dil İşleme Kütüphanesini kullanarak bir pandas DataFrame sütununda bulunan sayısal metinleri normalleştirir. (Ör: 2021 yılında, İstanbul toplam nüfusu 15840900 -&gt; iki bin yirmi bir yılında, İstanbul toplam nüfusu on beş milyon sekiz yüz kırk bin dokuz yüz)</td></tr><tr><td><code>mintlemon_data_preprocessing() -&gt; None</code></td><td>Verilen DataFrame sütunundaki metinleri geliştirmek üzere olduğumuz Türkçe Doğal Dil İşleme Kütüphanesinden Normalizer Modülünde çeşitli adımlara tabi tutarak veri ön işleme yapar.</td></tr><tr><td><code>remove_short_text() -&gt; None</code></td><td>Belirtilen DataFrame'den, belirli bir uzunluğun altındaki metin değerlerine sahip gözlem birimlerini kaldırır.</td></tr><tr><td><code>replace_is_offensive() -&gt; None</code></td><td>Belirtilen koşulları sağlayan 'is_offensive' değerlerini değiştirir. (Bağımlı değişken(target/dependent) incelendiğinde sınıf dağılımında aykırılık rastlanmıştır bu nedenle bu fonksiyon yazılmıştır.)</td></tr></tbody></table>
 
-- convert_offensive_contractions() -> None:
-> Belirtilen DataFrame sütunundaki kaba/küfür aykırı kelimeleri değiştirir. (Ör: b*k -> bok , aw -> amına koyiyim vb)
-
-- normalize_numeric_text_in_dataframe_column() -> pd.DataFrame:
-> Geliştirmek üzere olduğumuz Türkçe Doğal Dil İşleme Kütüphanesini kullanarak bir pandas DataFrame sütununda bulunan sayısal metinleri normalleştirir. (Ör: 2021 yılında, İstanbul toplam nüfusu 15840900 -> iki bin yirmi bir yılında, İstanbul toplam nüfusu on beş milyon sekiz yüz kırk bin dokuz yüz)
-
-- mintlemon_data_preprocessing() -> None:
-> Verilen DataFrame sütunundaki metinleri geliştirmek üzere olduğumuz Türkçe Doğal Dil İşleme Kütüphanesinden Normalizer Modülünde çeşitli adımlara tabi tutarak veri ön işleme yapar.
-
-- remove_short_text() -> None:
-> Belirtilen DataFrame'den, belirli bir uzunluğun altındaki metin değerlerine sahip gözlem birimlerini kaldırır.
-
-- replace_is_offensive() -> None:
-> Belirtilen koşulları sağlayan 'is_offensive' değerlerini değiştirir. (Bağımlı değişken(target/dependent) incelendiğinde sınıf dağılımında aykırılık rastlanmıştır bu nedenle bu fonksiyon yazılmıştır.)
 
 #### Örnek Kullanım
 
