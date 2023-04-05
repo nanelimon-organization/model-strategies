@@ -87,3 +87,137 @@ df.to_csv("data/teknofest_train_final_preprocessed.csv", index=False)
 * Veri ön işleme aşamasını ayrıntılı incelemek için lütfen [preprocessing-service](https://github.com/Teknofest-Nane-Limon/preprocessing-service) reposuna bir göz atın. 
 
 ---
+
+# Hyperparametre Tuning Yöntemleri ve Uygulamaları
+
+Bu GitHub reposu, 2023 Teknofest Yarışması kapsamında gerçekleştirilen Türkçe doğal dil işleme yarışmasında hazırlamış olduğumuz modelin performans iyileştirmeleri için preprocessing süreçlerinin caselerini ve hyper-parametre tuning çalışmasının sonuçlarını içermektedir.
+
+----
+
+## BERT Tabanlı Multi Class Modellerde Hyper Parametre Tuning Araştırması
+
+- **Model:** xlm-roberta-base
+- **Max_lenght:** 64
+- **Batch size:** 32
+- **Learning rate:** 5e-5
+- **Epoch:** 8
+- **AdamW Eps:** 1e-7 
+
+|        | INSULT | PROFANITY | RACIST | SEXIST | OTHER |
+| ------ | ------  | ------ | ------  | ------ |------ |
+| Precision | 0.780488 | 0.925214 | 0.875000 | 0.913366 | 0.839833 |
+| Recall  | 0.801670 | 0.917373 | 0.872818 | 0.887019 | 0.844538 |
+| F1 Score | 0.790937 | 0.921277 | 0.873908 | 0.900000 | 0.842179 |
+
+
+
+- **Model:** dbmdz/bert-base-turkish-uncased
+- **Max_lenght:** 64
+- **Batch size:** 32
+- **Learning rate:** 5e-5
+- **Epoch:** 8
+- **AdamW Eps:** 1e-7 
+
+|        | INSULT | PROFANITY | RACIST | SEXIST | OTHER |
+| ------ | ------  | ------ | ------  | ------ |------ |
+| Precision | 0.880808 | 0.951681 | 0.946602 | 0.956522 | 0.962373 |
+| Recall  | 0.910230 | 0.953684 | 0.965347 | 0.951923 | 0.931373 |
+| F1 Score | 0.895277 | 0.952681 | 0.955882 | 0.954217 | 0.946619 |
+
+
+- **Model:** dbmdz/bert-base-turkish-128k-uncased
+- **Max_lenght:** 64
+- **Batch size:** 32
+- **Learning rate:** 5e-5
+- **Epoch:** 8
+- **AdamW Eps:** 1e-6
+
+
+
+|        | INSULT | PROFANITY | RACIST | SEXIST | OTHER |
+| ------ | ------  | ------ | ------  | ------ |------ |
+| Precision | 0.902439 | 0.976190 | 0.957921 | 0.960784 | 0.955307 |
+| Recall  | 0.926931 | 0.955508 | 0.965987 | 0.942308 | 0.957983 |
+| F1 Score | 0.914521 | 0.965739 | 0.961491 | 0.951456 | 0.956643 |
+
+
+- **Model:** dbmdz/bert-base-turkish-128k-uncased
+- **Max_lenght:** 64
+- **Batch size:** 32
+- **Learning rate:** 5e-5
+- **Epoch:** 8
+- **AdamW Eps:** 1e-7 
+
+|        | INSULT | PROFANITY | RACIST | SEXIST | OTHER |
+| ------ | ------  | ------ | ------  | ------ |------ |
+| Precision | 0.929787 | 0.957717 | 0.976923 | 0.953052 | 0.954167 |
+| Recall  | 0.912317 | 0.957717 | 0.954887 | 0.975962 | 0.964888 |
+| F1 Score | 0.920969 | 0.957717 | 0.965779 | 0.964371 | 0.959497 |
+
+
+
+- **Model:** dbmdz/bert-base-turkish-128k-uncased
+- **Max_lenght:** 64
+- **Batch size:** 32
+- **Learning rate:** 5e-5
+- **Epoch:** 8
+- **AdamW Eps:** 1e-8
+
+
+|        | INSULT | PROFANITY | RACIST | SEXIST | OTHER |
+| ------ | ------  | ------ | ------  | ------ |------ |
+| Precision | 0.914761 | 0.974194| 0.960784 | 0.958435 | 0.956885 |
+| Recall  | 0.918580 | 0.959746 | 0.977556 | 0.942308 | 0.963585 |
+| F1 Score | 0.916667 | 0.966916 | 0.969098 | 0.950303 | 0.960223 |
+
+
+
+- **Model:** dbmdz/bert-base-turkish-128k-uncased
+- **Max_lenght:** 64
+- **Batch size:** 32
+- **Learning rate:** 5e-5
+- **Epoch:** 8
+- **AdamW Eps:** 1e-9
+
+
+
+|        | INSULT | PROFANITY | RACIST | SEXIST | OTHER |
+| ------ | ------  | ------ | ------  | ------ |------ |
+| Precision | 0.898580 | 0.980392 | 0.965347 | 0.965347 | 0.952909 |
+| Recall  | 0.924843 | 0.953390 | 0.972569 | 0.937500 | 0.963585 |
+| F1 Score | 0.911523 | 0.966702 | 0.968944 | 0.951220 | 0.958217 |
+
+
+
+- **Model:** dbmdz/bert-base-turkish-128k-uncased
+- **Max_lenght:** 64
+- **Batch size:** 16
+- **Learning rate:** 5e-5
+- **Epoch:** 8
+- **AdamW Eps:** 1e-7
+
+|        | INSULT | PROFANITY | RACIST | SEXIST | OTHER |
+| ------ | ------  | ------ | ------  | ------ |------ |
+| Precision | 0.891348 | 0.971922 | 0.946210 | 0.963145 | 0.954674 |
+| Recall  | 0.924843 | 0.953390 | 0.965087 | 0.942308 | 0.943978 |
+| F1 Score | 0.907787 | 0.962567 | 0.955556 | 0.952612 | 0.949296 |
+
+
+- **Model:** dbmdz/bert-base-turkish-128k-uncased
+- **Max_lenght:** 64
+- **Batch size:** 64
+- **Learning rate:** 5e-5
+- **Epoch:** 8
+- **AdamW Eps:** 1e-7
+
+|        | INSULT | PROFANITY | RACIST | SEXIST | OTHER |
+| ------ | ------  | ------ | ------  | ------ |------ |
+| Precision | 0.919421 | 0.976190 | 0.962963 | 0.958435 | 0.952909 |
+| Recall  | 0.929019 | 0.955508 | 0.972569 | 0.942308 | 0.963585 |
+| F1 Score | 0.924195 | 0.965739 | 0.967742 | 0.950303 | 0.958217 |
+
+### Sonuç
+Çalışmada dört farklı Türkçe BERT modeli kullanılmıştır: xlm-roberta-base, dbmdz/bert-base-turkish-uncased, dbmdz/bert-base-turkish-128k-uncased (3 farklı AdamW eps seviyesi için), ve en yüksek F1 skoru veren model de dahil olmak üzere sonuçları karşılaştırmak için farklı hiper parametreler kullanılmıştır.
+
+Sonuçlar, farklı modellerin farklı performans seviyelerine sahip olduğunu göstermektedir. En iyi sonuçlar dbmdz/bert-base-turkish-128k-uncased modelinde elde edilmiştir, bu model için F1 skoru 0.9657'dir. Bu sonuçlar, Türkçe metinler için BERT modellerinin başarılı bir şekilde kullanılabileceğini ve farklı hiper parametrelerin modellerin performansını önemli ölçüde etkileyebileceğini göstermektedir.
+
