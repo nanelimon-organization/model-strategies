@@ -217,7 +217,6 @@ Bu GitHub reposu, 2023 Teknofest Yarışması kapsamında gerçekleştirilen Tü
 | F1 Score | 0.924195 | 0.965739 | 0.967742 | 0.950303 | 0.958217 |
 
 ### Sonuç
-Çalışmada dört farklı Türkçe BERT modeli kullanılmıştır: xlm-roberta-base, dbmdz/bert-base-turkish-uncased, dbmdz/bert-base-turkish-128k-uncased (3 farklı AdamW eps seviyesi için), ve en yüksek F1 skoru veren model de dahil olmak üzere sonuçları karşılaştırmak için farklı hiper parametreler kullanılmıştır.
+Çalışmada dört farklı Türkçe BERT modeli kullanılmıştır. Bu modeller; xlm-roberta-base, dbmdz/bert-base-turkish-uncased, dbmdz/bert-base-turkish-128k-uncased (3 farklı AdamW eps seviyesi için), ve en yüksek F1 skoru veren modeldir. Farklı hiper parametreler kullanılarak sonuçları karşılaştırmak için bu modeller üzerinde çalışılmıştır. Sonuçlar, modellerin farklı performans seviyelerine sahip olduğunu ortaya koymaktadır. En iyi sonuçlar dbmdz/bert-base-turkish-128k-uncased modelinde elde edilmiştir ve bu model için F1 skoru 0.9657'dir. Bu sonuçlar, Türkçe metinler için BERT modellerinin başarılı bir şekilde kullanılabileceğini ve farklı hiper parametrelerin modellerin performansını önemli ölçüde etkileyebileceğini göstermektedir.
 
-Sonuçlar, farklı modellerin farklı performans seviyelerine sahip olduğunu göstermektedir. En iyi sonuçlar dbmdz/bert-base-turkish-128k-uncased modelinde elde edilmiştir, bu model için F1 skoru 0.9657'dir. Bu sonuçlar, Türkçe metinler için BERT modellerinin başarılı bir şekilde kullanılabileceğini ve farklı hiper parametrelerin modellerin performansını önemli ölçüde etkileyebileceğini göstermektedir.
-
+Sonuç olarak, çalışmada farklı Türkçe BERT modelleri ve hiper parametreleri kullanılarak, Türkçe metin sınıflandırması için en iyi performansı sağlayan model belirlenmiştir. Bu çalışma, Türkçe doğal dil işleme alanında, daha doğru ve verimli sınıflandırma modellerinin oluşturulmasına katkı sağlamaktadır.
