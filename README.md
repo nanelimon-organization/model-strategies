@@ -1,4 +1,7 @@
 # Model Baseline Insult
+Kullanılan model githubta paylaşılmıştır: [link için tıklayın.](https://huggingface.co/nanelimon/bert-base-insult-model/tree/main)
+Kullanılan veri setleri huggingface te paylaşılmıştır: [link için tıklayın.](https://huggingface.co/datasets/nanelimon/insult-dataset)
+
 
 Bu proje, Teknofest 2023 Türkçe Doğal Dil İşleme Yarışması kapsamında Türkçe dilindeki metinleri beş kategoriye ayıran bir sınıflandırma problemi için baseline oluşturma çalışmasıdır.
 
